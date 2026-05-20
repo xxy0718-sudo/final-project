@@ -150,90 +150,6 @@ footer{
     transform:scale(1.03);
 }
 
-/* NETFLIX POSTERS */
-
-.poster-row{
-
-    display:flex;
-
-    overflow-x:auto;
-
-    gap:25px;
-
-    padding-bottom:20px;
-
-    scroll-behavior:smooth;
-}
-
-.poster-row::-webkit-scrollbar{
-
-    height:10px;
-}
-
-.poster-row::-webkit-scrollbar-thumb{
-
-    background:#E50914;
-
-    border-radius:20px;
-}
-
-.poster-card{
-
-    min-width:260px;
-
-    background:rgba(20,20,20,0.72);
-
-    border-radius:22px;
-
-    overflow:hidden;
-
-    transition:0.4s;
-
-    backdrop-filter:blur(12px);
-
-    border:1px solid rgba(255,255,255,0.08);
-}
-
-.poster-card:hover{
-
-    transform:
-    scale(1.06)
-    translateY(-10px);
-
-    box-shadow:
-    0 0 35px rgba(229,9,20,0.45);
-}
-
-.poster-card img{
-
-    width:100%;
-
-    height:390px;
-
-    object-fit:cover;
-}
-
-.poster-content{
-
-    padding:18px;
-}
-
-.poster-title{
-
-    font-size:24px;
-
-    font-weight:700;
-
-    margin-bottom:10px;
-}
-
-.poster-info{
-
-    color:#d1d5db;
-
-    line-height:1.8;
-}
-
 /* METRICS */
 
 [data-testid="metric-container"]{
@@ -247,6 +163,33 @@ footer{
     border-radius:18px;
 
     backdrop-filter:blur(10px);
+}
+
+/* MOVIE CARDS */
+
+.movie-card{
+
+    background:rgba(20,20,20,0.72);
+
+    border:1px solid rgba(255,255,255,0.08);
+
+    border-radius:20px;
+
+    padding:15px;
+
+    transition:0.4s;
+
+    margin-bottom:20px;
+}
+
+.movie-card:hover{
+
+    transform:
+    translateY(-8px)
+    scale(1.03);
+
+    box-shadow:
+    0 0 30px rgba(229,9,20,0.4);
 }
 
 /* DATAFRAME */
@@ -393,7 +336,7 @@ else:
     search_df = filtered_df
 
 # ------------------------------------------------
-# NETFLIX STYLE POSTERS
+# TRENDING CINEMA
 # ------------------------------------------------
 
 st.markdown(
@@ -429,20 +372,6 @@ movies = [
         "image":"https://image.tmdb.org/t/p/w500/udDclJoHjfjb8Ekgsd4FDteOkCU.jpg",
         "rating":"8.4",
         "genre":"Drama"
-    },
-
-    {
-        "title":"Dune",
-        "image":"https://image.tmdb.org/t/p/w500/d5NXSklXo0qyIYkgV94XAgMIckC.jpg",
-        "rating":"8.2",
-        "genre":"Sci-Fi"
-    },
-
-    {
-        "title":"The Batman",
-        "image":"https://image.tmdb.org/t/p/w500/74xTEgt7R36Fpooo50r9T25onhq.jpg",
-        "rating":"8.1",
-        "genre":"Action"
     }
 
 ]
@@ -461,36 +390,31 @@ else:
 
     filtered_movies = movies
 
-html = '<div class="poster-row">'
+cols = st.columns(len(filtered_movies))
 
-for movie in filtered_movies:
+for index, movie in enumerate(filtered_movies):
 
-    html += f'''
+    with cols[index]:
 
-    <div class="poster-card">
+        st.markdown(
+            '<div class="movie-card">',
+            unsafe_allow_html=True
+        )
 
-        <img src="{movie["image"]}">
+        st.image(movie["image"])
 
-        <div class="poster-content">
+        st.markdown(
+            f"### {movie['title']}"
+        )
 
-            <div class="poster-title">
-                {movie["title"]}
-            </div>
+        st.write(f"⭐ Rating: {movie['rating']}")
 
-            <div class="poster-info">
-                ⭐ {movie["rating"]}<br>
-                🎬 {movie["genre"]}
-            </div>
+        st.write(f"🎬 Genre: {movie['genre']}")
 
-        </div>
-
-    </div>
-
-    '''
-
-html += '</div>'
-
-st.markdown(html, unsafe_allow_html=True)
+        st.markdown(
+            '</div>',
+            unsafe_allow_html=True
+        )
 
 # ------------------------------------------------
 # CHARTS
