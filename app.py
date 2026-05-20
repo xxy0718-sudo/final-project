@@ -527,4 +527,3 @@ Created by 허형월
 
 </center>
 """, unsafe_allow_html=True)
-```
