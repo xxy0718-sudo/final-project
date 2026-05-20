@@ -25,7 +25,7 @@ html, body, [class*="css"] {
     font-family: Arial, sans-serif;
 }
 
-/* Hide Streamlit Style */
+/* Hide Streamlit default menu */
 
 #MainMenu {
     visibility: hidden;
@@ -35,11 +35,9 @@ footer {
     visibility: hidden;
 }
 
-/* Hero Banner */
+/* HERO SECTION */
 
 .hero {
-    position: relative;
-
     background-image:
     linear-gradient(
         rgba(0,0,0,0.7),
@@ -73,7 +71,7 @@ footer {
     color: #d1d5db;
 }
 
-/* Section Titles */
+/* Section Title */
 
 .section-title {
     font-size: 42px;
@@ -86,32 +84,31 @@ footer {
 
 .metric-card {
     background: rgba(255,255,255,0.05);
-    border: 1px solid rgba(255,255,255,0.08);
     border-radius: 20px;
     padding: 35px;
     text-align: center;
+    border: 1px solid rgba(255,255,255,0.08);
     transition: 0.3s;
 }
 
 .metric-card:hover {
     transform: translateY(-5px);
     border-color: #ef4444;
-    box-shadow: 0 0 20px rgba(239,68,68,0.3);
+    box-shadow: 0 0 20px rgba(239,68,68,0.25);
 }
 
 .metric-number {
     font-size: 48px;
-    color: #ef4444;
     font-weight: bold;
+    color: #ef4444;
 }
 
 .metric-text {
-    margin-top: 12px;
+    margin-top: 10px;
     color: #d1d5db;
-    font-size: 18px;
 }
 
-/* Genre Cards */
+/* Genre Buttons */
 
 .genre-container {
     display: flex;
@@ -122,10 +119,9 @@ footer {
 
 .genre-card {
     background: #111827;
-    padding: 16px 28px;
+    padding: 15px 28px;
     border-radius: 40px;
     border: 1px solid rgba(255,255,255,0.08);
-    font-size: 18px;
     transition: 0.3s;
 }
 
@@ -147,11 +143,13 @@ footer {
 .movie-card:hover {
     transform: translateY(-10px);
     border-color: #ef4444;
-    box-shadow: 0 0 25px rgba(239,68,68,0.25);
+    box-shadow: 0 0 25px rgba(239,68,68,0.3);
 }
 
 .movie-card img {
     width: 100%;
+    height: 500px;
+    object-fit: cover;
 }
 
 .movie-content {
@@ -160,19 +158,12 @@ footer {
 
 .movie-title {
     font-size: 24px;
-    margin-bottom: 12px;
+    margin-bottom: 10px;
 }
 
 .movie-info {
     color: #d1d5db;
-    line-height: 1.9;
-}
-
-/* Search Box */
-
-.stTextInput input {
-    background-color: #111827;
-    color: white;
+    line-height: 1.8;
 }
 
 /* Sidebar */
@@ -185,7 +176,7 @@ footer {
 """, unsafe_allow_html=True)
 
 # -----------------------------------
-# HERO SECTION
+# HERO BANNER
 # -----------------------------------
 
 st.markdown("""
@@ -198,7 +189,7 @@ Through Data
 
 <p>
 An interactive movie discovery platform inspired by Netflix and IMDb.
-Explore movie genres, audience ratings, popularity trends, and global cinema insights through cinematic data visualization.
+Explore movie genres, audience ratings, popularity trends, and cinematic insights.
 </p>
 
 </div>
@@ -303,7 +294,7 @@ filtered_df = df[
 ]
 
 # -----------------------------------
-# SEARCH SECTION
+# SEARCH BAR
 # -----------------------------------
 
 st.markdown(
@@ -311,9 +302,7 @@ st.markdown(
     unsafe_allow_html=True
 )
 
-search = st.text_input(
-    "Search your favorite movie"
-)
+search = st.text_input("Search Movie")
 
 if search:
 
@@ -337,6 +326,7 @@ st.markdown(
 col1, col2, col3, col4 = st.columns(4)
 
 with col1:
+
     st.markdown(f"""
     <div class="metric-card">
         <div class="metric-number">{len(search_df)}</div>
@@ -345,6 +335,7 @@ with col1:
     """, unsafe_allow_html=True)
 
 with col2:
+
     st.markdown(f"""
     <div class="metric-card">
         <div class="metric-number">{round(search_df['Rating'].mean(),1)}</div>
@@ -353,14 +344,16 @@ with col2:
     """, unsafe_allow_html=True)
 
 with col3:
+
     st.markdown(f"""
     <div class="metric-card">
         <div class="metric-number">{search_df['Popularity'].max()}</div>
-        <div class="metric-text">Popularity Score</div>
+        <div class="metric-text">Popularity</div>
     </div>
     """, unsafe_allow_html=True)
 
 with col4:
+
     st.markdown(f"""
     <div class="metric-card">
         <div class="metric-number">${search_df['BoxOffice'].sum()}M</div>
@@ -373,7 +366,7 @@ with col4:
 # -----------------------------------
 
 st.markdown(
-    '<div class="section-title">🎭 Movie Genres</div>',
+    '<div class="section-title">🎭 Genres</div>',
     unsafe_allow_html=True
 )
 
@@ -521,9 +514,7 @@ st.markdown("""
 
 <h3>🎬 Movie Genre & Audience Trends Dashboard</h3>
 
-<p>
-Created by 허형월
-</p>
+<p>Created by 허형월</p>
 
 </center>
 """, unsafe_allow_html=True)
