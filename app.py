@@ -302,9 +302,11 @@ st.markdown(
     unsafe_allow_html=True
 )
 
-search = st.text_input("Search Movie")
+search = st.text_input("🔍 Search Movie")
 
-if search:
+search_button = st.button("Search")
+
+if search_button and search:
 
     search_df = filtered_df[
         filtered_df["Movie"].str.contains(search, case=False)
