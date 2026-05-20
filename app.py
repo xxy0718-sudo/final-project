@@ -1,20 +1,21 @@
+```python
 import streamlit as st
 import pandas as pd
 import plotly.express as px
 
-# --------------------------------
-# Page Config
-# --------------------------------
+# -----------------------------------
+# PAGE CONFIG
+# -----------------------------------
 
 st.set_page_config(
-    page_title="Movie Trends Dashboard",
+    page_title="Movie Genre & Audience Trends Dashboard",
     page_icon="🎬",
     layout="wide"
 )
 
-# --------------------------------
-# Custom CSS
-# --------------------------------
+# -----------------------------------
+# CUSTOM CSS
+# -----------------------------------
 
 st.markdown("""
 <style>
@@ -25,6 +26,8 @@ html, body, [class*="css"] {
     font-family: Arial, sans-serif;
 }
 
+/* Hide Streamlit Style */
+
 #MainMenu {
     visibility: hidden;
 }
@@ -32,6 +35,8 @@ html, body, [class*="css"] {
 footer {
     visibility: hidden;
 }
+
+/* Hero Banner */
 
 .hero {
     position: relative;
@@ -49,13 +54,13 @@ footer {
     padding: 140px 60px;
     border-radius: 25px;
 
-    margin-bottom: 40px;
+    margin-bottom: 50px;
 }
 
 .hero h1 {
-    font-size: 70px;
+    font-size: 75px;
+    line-height: 1.1;
     margin-bottom: 20px;
-    color: white;
 }
 
 .hero span {
@@ -64,24 +69,35 @@ footer {
 
 .hero p {
     font-size: 24px;
-    color: #d1d5db;
-    max-width: 800px;
+    max-width: 850px;
     line-height: 1.8;
+    color: #d1d5db;
 }
 
+/* Section Titles */
+
 .section-title {
-    font-size: 40px;
-    margin-top: 50px;
-    margin-bottom: 30px;
+    font-size: 42px;
+    margin-top: 60px;
+    margin-bottom: 35px;
     color: white;
 }
 
+/* Metric Cards */
+
 .metric-card {
     background: rgba(255,255,255,0.05);
-    padding: 30px;
-    border-radius: 20px;
-    text-align: center;
     border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 20px;
+    padding: 35px;
+    text-align: center;
+    transition: 0.3s;
+}
+
+.metric-card:hover {
+    transform: translateY(-5px);
+    border-color: #ef4444;
+    box-shadow: 0 0 20px rgba(239,68,68,0.3);
 }
 
 .metric-number {
@@ -91,31 +107,48 @@ footer {
 }
 
 .metric-text {
-    margin-top: 10px;
-    font-size: 18px;
+    margin-top: 12px;
     color: #d1d5db;
+    font-size: 18px;
 }
+
+/* Genre Cards */
 
 .genre-container {
     display: flex;
     flex-wrap: wrap;
-    gap: 20px;
-    margin-bottom: 40px;
+    gap: 18px;
+    margin-bottom: 30px;
 }
 
 .genre-card {
     background: #111827;
-    padding: 18px 28px;
+    padding: 16px 28px;
     border-radius: 40px;
-    border: 1px solid rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.08);
     font-size: 18px;
+    transition: 0.3s;
 }
+
+.genre-card:hover {
+    background: #ef4444;
+    transform: scale(1.05);
+}
+
+/* Movie Cards */
 
 .movie-card {
     background: rgba(255,255,255,0.05);
     border-radius: 20px;
     overflow: hidden;
     border: 1px solid rgba(255,255,255,0.08);
+    transition: 0.4s;
+}
+
+.movie-card:hover {
+    transform: translateY(-10px);
+    border-color: #ef4444;
+    box-shadow: 0 0 25px rgba(239,68,68,0.25);
 }
 
 .movie-card img {
@@ -127,22 +160,34 @@ footer {
 }
 
 .movie-title {
-    font-size: 22px;
-    margin-bottom: 10px;
-    color: white;
+    font-size: 24px;
+    margin-bottom: 12px;
 }
 
 .movie-info {
     color: #d1d5db;
-    line-height: 1.8;
+    line-height: 1.9;
+}
+
+/* Search Box */
+
+.stTextInput input {
+    background-color: #111827;
+    color: white;
+}
+
+/* Sidebar */
+
+[data-testid="stSidebar"] {
+    background-color: #111827;
 }
 
 </style>
 """, unsafe_allow_html=True)
 
-# --------------------------------
-# Hero
-# --------------------------------
+# -----------------------------------
+# HERO SECTION
+# -----------------------------------
 
 st.markdown("""
 <div class="hero">
@@ -153,23 +198,23 @@ Through Data
 </h1>
 
 <p>
-An interactive cinematic dashboard analyzing movie genres,
-audience ratings, popularity trends, and global cinema insights.
+An interactive movie discovery platform inspired by Netflix and IMDb.
+Explore movie genres, audience ratings, popularity trends, and global cinema insights through cinematic data visualization.
 </p>
 
 </div>
 """, unsafe_allow_html=True)
 
-# --------------------------------
-# Dataset
-# --------------------------------
+# -----------------------------------
+# DATASET
+# -----------------------------------
 
 data = {
     "Movie": [
         "Inception",
         "Parasite",
-        "Avengers Endgame",
         "Interstellar",
+        "Avengers Endgame",
         "Joker",
         "Titanic",
         "Frozen",
@@ -179,8 +224,8 @@ data = {
     "Genre": [
         "Sci-Fi",
         "Drama",
-        "Action",
         "Sci-Fi",
+        "Action",
         "Drama",
         "Romance",
         "Animation",
@@ -190,8 +235,8 @@ data = {
     "Rating": [
         8.8,
         8.5,
-        8.4,
         8.7,
+        8.4,
         8.3,
         7.9,
         7.5,
@@ -201,8 +246,8 @@ data = {
     "Popularity": [
         98,
         92,
-        99,
         95,
+        99,
         94,
         90,
         85,
@@ -212,8 +257,8 @@ data = {
     "BoxOffice": [
         829,
         258,
-        2797,
         701,
+        2797,
         1074,
         2201,
         1280,
@@ -223,8 +268,8 @@ data = {
     "Year": [
         2010,
         2019,
-        2019,
         2014,
+        2019,
         2019,
         1997,
         2013,
@@ -234,11 +279,11 @@ data = {
 
 df = pd.DataFrame(data)
 
-# --------------------------------
-# Sidebar
-# --------------------------------
+# -----------------------------------
+# SIDEBAR
+# -----------------------------------
 
-st.sidebar.title("🎬 Filter Movies")
+st.sidebar.title("🎬 Movie Filters")
 
 genre_filter = st.sidebar.multiselect(
     "Select Genre",
@@ -258,12 +303,35 @@ filtered_df = df[
     (df["Rating"] >= rating_filter)
 ]
 
-# --------------------------------
-# Metrics
-# --------------------------------
+# -----------------------------------
+# SEARCH SECTION
+# -----------------------------------
 
 st.markdown(
-    '<div class="section-title">Dashboard Overview</div>',
+    '<div class="section-title">🔍 Search Movies</div>',
+    unsafe_allow_html=True
+)
+
+search = st.text_input(
+    "Search your favorite movie"
+)
+
+if search:
+
+    search_df = filtered_df[
+        filtered_df["Movie"].str.contains(search, case=False)
+    ]
+
+else:
+
+    search_df = filtered_df
+
+# -----------------------------------
+# METRICS
+# -----------------------------------
+
+st.markdown(
+    '<div class="section-title">📊 Dashboard Overview</div>',
     unsafe_allow_html=True
 )
 
@@ -272,7 +340,7 @@ col1, col2, col3, col4 = st.columns(4)
 with col1:
     st.markdown(f"""
     <div class="metric-card">
-        <div class="metric-number">{len(filtered_df)}</div>
+        <div class="metric-number">{len(search_df)}</div>
         <div class="metric-text">Movies</div>
     </div>
     """, unsafe_allow_html=True)
@@ -280,7 +348,7 @@ with col1:
 with col2:
     st.markdown(f"""
     <div class="metric-card">
-        <div class="metric-number">{round(filtered_df['Rating'].mean(),1)}</div>
+        <div class="metric-number">{round(search_df['Rating'].mean(),1)}</div>
         <div class="metric-text">Average Rating</div>
     </div>
     """, unsafe_allow_html=True)
@@ -288,7 +356,7 @@ with col2:
 with col3:
     st.markdown(f"""
     <div class="metric-card">
-        <div class="metric-number">{filtered_df['Popularity'].max()}</div>
+        <div class="metric-number">{search_df['Popularity'].max()}</div>
         <div class="metric-text">Popularity Score</div>
     </div>
     """, unsafe_allow_html=True)
@@ -296,25 +364,109 @@ with col3:
 with col4:
     st.markdown(f"""
     <div class="metric-card">
-        <div class="metric-number">${filtered_df['BoxOffice'].sum()}M</div>
+        <div class="metric-number">${search_df['BoxOffice'].sum()}M</div>
         <div class="metric-text">Box Office</div>
     </div>
     """, unsafe_allow_html=True)
 
-# --------------------------------
-# Charts
-# --------------------------------
+# -----------------------------------
+# GENRE SECTION
+# -----------------------------------
 
 st.markdown(
-    '<div class="section-title">Audience Trends</div>',
+    '<div class="section-title">🎭 Movie Genres</div>',
+    unsafe_allow_html=True
+)
+
+st.markdown("""
+<div class="genre-container">
+
+<div class="genre-card">🎬 Action</div>
+<div class="genre-card">👻 Horror</div>
+<div class="genre-card">🚀 Sci-Fi</div>
+<div class="genre-card">💕 Romance</div>
+<div class="genre-card">🎭 Drama</div>
+<div class="genre-card">✨ Animation</div>
+
+</div>
+""", unsafe_allow_html=True)
+
+# -----------------------------------
+# MOVIE CARDS
+# -----------------------------------
+
+st.markdown(
+    '<div class="section-title">🎞 Top Movies</div>',
+    unsafe_allow_html=True
+)
+
+movies = [
+    {
+        "title":"Inception",
+        "image":"https://image.tmdb.org/t/p/w500/9gk7adHYeDvHkCSEqAvQNLV5Uge.jpg",
+        "rating":"8.8",
+        "genre":"Sci-Fi"
+    },
+
+    {
+        "title":"Parasite",
+        "image":"https://image.tmdb.org/t/p/w500/7IiTTgloJzvGI1TAYymCfbfl3vT.jpg",
+        "rating":"8.5",
+        "genre":"Drama"
+    },
+
+    {
+        "title":"Interstellar",
+        "image":"https://image.tmdb.org/t/p/w500/gEU2QniE6E77NI6lCU6MxlNBvIx.jpg",
+        "rating":"8.7",
+        "genre":"Sci-Fi"
+    }
+]
+
+col1, col2, col3 = st.columns(3)
+
+columns = [col1, col2, col3]
+
+for col, movie in zip(columns, movies):
+
+    with col:
+
+        st.markdown(f"""
+        <div class="movie-card">
+
+            <img src="{movie['image']}">
+
+            <div class="movie-content">
+
+                <div class="movie-title">
+                    {movie['title']}
+                </div>
+
+                <div class="movie-info">
+                    ⭐ Rating : {movie['rating']} <br>
+                    🎬 Genre : {movie['genre']}
+                </div>
+
+            </div>
+
+        </div>
+        """, unsafe_allow_html=True)
+
+# -----------------------------------
+# CHARTS
+# -----------------------------------
+
+st.markdown(
+    '<div class="section-title">📈 Audience Trends</div>',
     unsafe_allow_html=True
 )
 
 fig1 = px.bar(
-    filtered_df,
+    search_df,
     x="Movie",
     y="Rating",
-    color="Genre"
+    color="Genre",
+    title="Movie Ratings"
 )
 
 fig1.update_layout(
@@ -325,12 +477,15 @@ fig1.update_layout(
 
 st.plotly_chart(fig1, use_container_width=True)
 
+# -----------------------------------
+
 fig2 = px.line(
-    filtered_df,
+    search_df,
     x="Year",
     y="Popularity",
     color="Movie",
-    markers=True
+    markers=True,
+    title="Popularity Trends"
 )
 
 fig2.update_layout(
@@ -341,9 +496,12 @@ fig2.update_layout(
 
 st.plotly_chart(fig2, use_container_width=True)
 
+# -----------------------------------
+
 fig3 = px.pie(
-    filtered_df,
-    names="Genre"
+    search_df,
+    names="Genre",
+    title="Genre Distribution"
 )
 
 fig3.update_layout(
@@ -353,18 +511,21 @@ fig3.update_layout(
 
 st.plotly_chart(fig3, use_container_width=True)
 
-# --------------------------------
-# Footer
-# --------------------------------
+# -----------------------------------
+# FOOTER
+# -----------------------------------
 
 st.markdown("""
-<br><br>
+<br><br><br>
 
 <center>
 
 <h3>🎬 Movie Genre & Audience Trends Dashboard</h3>
 
-<p>Created by 허형월</p>
+<p>
+Created by 허형월
+</p>
 
 </center>
 """, unsafe_allow_html=True)
+```
