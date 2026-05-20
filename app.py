@@ -392,57 +392,34 @@ st.markdown(
     unsafe_allow_html=True
 )
 
-movies = [
-    {
-        "title":"Inception",
-        "image":"https://image.tmdb.org/t/p/w500/9gk7adHYeDvHkCSEqAvQNLV5Uge.jpg",
-        "rating":"8.8",
-        "genre":"Sci-Fi"
-    },
+movie1, movie2, movie3 = st.columns(3)
 
-    {
-        "title":"Parasite",
-        "image":"https://image.tmdb.org/t/p/w500/7IiTTgloJzvGI1TAYymCfbfl3vT.jpg",
-        "rating":"8.5",
-        "genre":"Drama"
-    },
+with movie1:
+    st.image(
+        "https://image.tmdb.org/t/p/w500/9gk7adHYeDvHkCSEqAvQNLV5Uge.jpg"
+    )
 
-    {
-        "title":"Interstellar",
-        "image":"https://image.tmdb.org/t/p/w500/gEU2QniE6E77NI6lCU6MxlNBvIx.jpg",
-        "rating":"8.7",
-        "genre":"Sci-Fi"
-    }
-]
+    st.markdown("### Inception")
+    st.write("⭐ Rating: 8.8")
+    st.write("🎬 Genre: Sci-Fi")
 
-col1, col2, col3 = st.columns(3)
+with movie2:
+    st.image(
+        "https://image.tmdb.org/t/p/w500/7IiTTgloJzvGI1TAYymCfbfl3vT.jpg"
+    )
 
-columns = [col1, col2, col3]
+    st.markdown("### Parasite")
+    st.write("⭐ Rating: 8.5")
+    st.write("🎬 Genre: Drama")
 
-for col, movie in zip(columns, movies):
+with movie3:
+    st.image(
+        "https://image.tmdb.org/t/p/w500/gEU2QniE6E77NI6lCU6MxlNBvIx.jpg"
+    )
 
-    with col:
-
-        st.markdown(f"""
-        <div class="movie-card">
-
-            <img src="{movie['image']}">
-
-            <div class="movie-content">
-
-                <div class="movie-title">
-                    {movie['title']}
-                </div>
-
-                <div class="movie-info">
-                    ⭐ Rating : {movie['rating']} <br>
-                    🎬 Genre : {movie['genre']}
-                </div>
-
-            </div>
-
-        </div>
-        """, unsafe_allow_html=True)
+    st.markdown("### Interstellar")
+    st.write("⭐ Rating: 8.7")
+    st.write("🎬 Genre: Sci-Fi")
 
 # -----------------------------------
 # CHARTS
