@@ -33,10 +33,10 @@ html, body, [class*="css"]{
     background:
     linear-gradient(
         rgba(0,0,0,0.88),
-        rgba(0,0,0,0.95)
+        rgba(0,0,0,0.96)
     ),
 
-    url("https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?q=80&w=2070&auto=format&fit=crop");
+    url("https://images.unsplash.com/photo-1517604931442-7e0c8ed2963c?q=80&w=2070&auto=format&fit=crop");
 
     background-size:cover;
     background-position:center;
@@ -45,7 +45,7 @@ html, body, [class*="css"]{
     color:white;
 }
 
-/* REMOVE STREAMLIT STYLE */
+/* HIDE STREAMLIT */
 
 header{
     visibility:hidden;
@@ -65,18 +65,18 @@ footer{
 
     text-align:center;
 
-    font-size:90px;
+    font-size:100px;
 
     font-weight:900;
 
-    letter-spacing:8px;
+    letter-spacing:10px;
 
-    margin-top:50px;
+    margin-top:40px;
 
     color:white;
 
     text-shadow:
-    0 0 20px rgba(255,255,255,0.3),
+    0 0 20px rgba(255,255,255,0.25),
     0 0 40px rgba(229,9,20,0.4);
 }
 
@@ -91,7 +91,7 @@ footer{
     margin-bottom:60px;
 }
 
-/* SECTION TITLE */
+/* SECTION */
 
 .section-title{
 
@@ -99,59 +99,12 @@ footer{
 
     font-weight:700;
 
-    margin-top:40px;
+    margin-top:45px;
     margin-bottom:25px;
-
-    color:white;
 
     border-left:6px solid #E50914;
 
     padding-left:15px;
-}
-
-/* MOVIE CARD */
-
-.movie-card{
-
-    background:rgba(20,20,20,0.72);
-
-    backdrop-filter:blur(14px);
-
-    border:1px solid rgba(255,255,255,0.08);
-
-    border-radius:22px;
-
-    overflow:hidden;
-
-    transition:0.4s;
-
-    margin-bottom:30px;
-}
-
-.movie-card:hover{
-
-    transform:
-    translateY(-10px)
-    scale(1.02);
-
-    box-shadow:
-    0 0 35px rgba(229,9,20,0.35);
-}
-
-.movie-title{
-
-    font-size:28px;
-
-    font-weight:700;
-
-    margin-top:15px;
-}
-
-.movie-info{
-
-    color:#d1d5db;
-
-    margin-bottom:10px;
 }
 
 /* SEARCH */
@@ -162,11 +115,11 @@ footer{
 
     color:white;
 
-    border-radius:12px;
+    border-radius:14px;
 
-    border:1px solid rgba(255,255,255,0.15);
+    border:1px solid rgba(255,255,255,0.12);
 
-    padding:12px;
+    padding:14px;
 }
 
 /* BUTTON */
@@ -181,7 +134,7 @@ footer{
 
     border-radius:12px;
 
-    padding:12px 25px;
+    padding:12px 24px;
 
     font-size:16px;
 
@@ -197,7 +150,91 @@ footer{
     transform:scale(1.03);
 }
 
-/* METRIC */
+/* NETFLIX POSTERS */
+
+.poster-row{
+
+    display:flex;
+
+    overflow-x:auto;
+
+    gap:25px;
+
+    padding-bottom:20px;
+
+    scroll-behavior:smooth;
+}
+
+.poster-row::-webkit-scrollbar{
+
+    height:10px;
+}
+
+.poster-row::-webkit-scrollbar-thumb{
+
+    background:#E50914;
+
+    border-radius:20px;
+}
+
+.poster-card{
+
+    min-width:260px;
+
+    background:rgba(20,20,20,0.72);
+
+    border-radius:22px;
+
+    overflow:hidden;
+
+    transition:0.4s;
+
+    backdrop-filter:blur(12px);
+
+    border:1px solid rgba(255,255,255,0.08);
+}
+
+.poster-card:hover{
+
+    transform:
+    scale(1.06)
+    translateY(-10px);
+
+    box-shadow:
+    0 0 35px rgba(229,9,20,0.45);
+}
+
+.poster-card img{
+
+    width:100%;
+
+    height:390px;
+
+    object-fit:cover;
+}
+
+.poster-content{
+
+    padding:18px;
+}
+
+.poster-title{
+
+    font-size:24px;
+
+    font-weight:700;
+
+    margin-bottom:10px;
+}
+
+.poster-info{
+
+    color:#d1d5db;
+
+    line-height:1.8;
+}
+
+/* METRICS */
 
 [data-testid="metric-container"]{
 
@@ -226,7 +263,7 @@ footer{
 """, unsafe_allow_html=True)
 
 # ------------------------------------------------
-# HERO SECTION
+# HERO
 # ------------------------------------------------
 
 st.markdown(
@@ -250,10 +287,10 @@ data = {
         "Interstellar",
         "Parasite",
         "Joker",
-        "Avengers Endgame",
+        "Dune",
         "The Batman",
         "La La Land",
-        "Dune"
+        "Avengers Endgame"
     ],
 
     "Genre":[
@@ -261,10 +298,10 @@ data = {
         "Sci-Fi",
         "Drama",
         "Drama",
-        "Action",
+        "Sci-Fi",
         "Action",
         "Romance",
-        "Sci-Fi"
+        "Action"
     ],
 
     "Rating":[
@@ -272,10 +309,10 @@ data = {
         8.7,
         8.5,
         8.4,
-        8.3,
+        8.2,
         8.1,
         8.0,
-        8.2
+        8.3
     ],
 
     "Popularity":[
@@ -283,10 +320,10 @@ data = {
         92,
         90,
         89,
-        98,
+        88,
         86,
         80,
-        91
+        98
     ]
 }
 
@@ -356,7 +393,7 @@ else:
     search_df = filtered_df
 
 # ------------------------------------------------
-# MOVIE POSTERS
+# NETFLIX STYLE POSTERS
 # ------------------------------------------------
 
 st.markdown(
@@ -392,7 +429,22 @@ movies = [
         "image":"https://image.tmdb.org/t/p/w500/udDclJoHjfjb8Ekgsd4FDteOkCU.jpg",
         "rating":"8.4",
         "genre":"Drama"
+    },
+
+    {
+        "title":"Dune",
+        "image":"https://image.tmdb.org/t/p/w500/d5NXSklXo0qyIYkgV94XAgMIckC.jpg",
+        "rating":"8.2",
+        "genre":"Sci-Fi"
+    },
+
+    {
+        "title":"The Batman",
+        "image":"https://image.tmdb.org/t/p/w500/74xTEgt7R36Fpooo50r9T25onhq.jpg",
+        "rating":"8.1",
+        "genre":"Action"
     }
+
 ]
 
 filtered_movies = []
@@ -409,32 +461,36 @@ else:
 
     filtered_movies = movies
 
-cols = st.columns(4)
+html = '<div class="poster-row">'
 
-for index, movie in enumerate(filtered_movies):
+for movie in filtered_movies:
 
-    with cols[index % 4]:
+    html += f'''
 
-        st.markdown('<div class="movie-card">', unsafe_allow_html=True)
+    <div class="poster-card">
 
-        st.image(movie["image"])
+        <img src="{movie["image"]}">
 
-        st.markdown(
-            f'<div class="movie-title">{movie["title"]}</div>',
-            unsafe_allow_html=True
-        )
+        <div class="poster-content">
 
-        st.markdown(
-            f'<div class="movie-info">⭐ Rating: {movie["rating"]}</div>',
-            unsafe_allow_html=True
-        )
+            <div class="poster-title">
+                {movie["title"]}
+            </div>
 
-        st.markdown(
-            f'<div class="movie-info">🎬 Genre: {movie["genre"]}</div>',
-            unsafe_allow_html=True
-        )
+            <div class="poster-info">
+                ⭐ {movie["rating"]}<br>
+                🎬 {movie["genre"]}
+            </div>
 
-        st.markdown("</div>", unsafe_allow_html=True)
+        </div>
+
+    </div>
+
+    '''
+
+html += '</div>'
+
+st.markdown(html, unsafe_allow_html=True)
 
 # ------------------------------------------------
 # CHARTS
@@ -481,7 +537,7 @@ with chart2:
     st.plotly_chart(fig2, use_container_width=True)
 
 # ------------------------------------------------
-# DATA TABLE
+# DATABASE
 # ------------------------------------------------
 
 st.markdown(
