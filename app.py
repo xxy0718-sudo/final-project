@@ -269,12 +269,26 @@ col4.metric("Box Office", f"${filtered_df['BoxOffice'].sum():,.0f}M")
 # Featured Movie Cards
 # =========================
 st.markdown('<div class="section-title">Featured Audience Favorites</div>', unsafe_allow_html=True)
-featured = filtered_df.sort_values(["Rating", "Popularity"], ascending=False).head(3)
+# Add poster images for a more cinematic UI
+poster_map = {
+    "Inception": "https://image.tmdb.org/t/p/w500/qmDpIHrmpJINaRKAfWQfftjCdyi.jpg",
+    "Interstellar": "https://image.tmdb.org/t/p/w500/gEU2QniE6E77NI6lCU6MxlNBvIx.jpg",
+    "The Dark Knight": "https://image.tmdb.org/t/p/w500/qJ2tW6WMUDux911r6m7haRef0WH.jpg",
+    "Parasite": "https://image.tmdb.org/t/p/w500/7IiTTgloJzvGI1TAYymCfbfl3vT.jpg",
+    "Dune": "https://image.tmdb.org/t/p/w500/d5NXSklXo0qyIYkgV94XAgMIckC.jpg",
+    "Oppenheimer": "https://image.tmdb.org/t/p/w500/ptpr0kGAckfQkJeJIt8st5dglvd.jpg",
+    "Avatar": "https://image.tmdb.org/t/p/w500/kyeqWdyUXW608qlYkRqosgbbJyK.jpg",
+    "La La Land": "https://image.tmdb.org/t/p/w500/uDO8zWDhfWwoFdKS4fzkUJt0Rf0.jpg"
+}
+
+featured = filtered_df.sort_values(["Rating", "Popularity"], ascending=False).head(6)
 cols = st.columns(3)
 for col, (_, row) in zip(cols, featured.iterrows()):
     with col:
         st.markdown(f"""
         <div class="movie-card">
+            <img src="{poster_map.get(row['Movie'], 'https://via.placeholder.com/300x450?text=Movie')}" 
+                 style="width:100%; border-radius:16px; margin-bottom:14px;">
             <div class="badge">{row['Genre']}</div>
             <div class="movie-title">{row['Movie']}</div>
             <div class="movie-meta">
