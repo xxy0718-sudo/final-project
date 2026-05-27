@@ -143,13 +143,51 @@ html, body, [class*="css"] {
     backdrop-filter: blur(14px);
 }
 
+.movie-scroll {
+    display: flex;
+    gap: 18px;
+    overflow-x: auto;
+    padding: 10px 4px 24px 4px;
+    scroll-snap-type: x mandatory;
+}
+
+.movie-scroll::-webkit-scrollbar {
+    height: 8px;
+}
+
+.movie-scroll::-webkit-scrollbar-track {
+    background: rgba(255,255,255,0.05);
+    border-radius: 999px;
+}
+
+.movie-scroll::-webkit-scrollbar-thumb {
+    background: rgba(229, 9, 20, 0.75);
+    border-radius: 999px;
+}
+
 .movie-card {
+    flex: 0 0 210px;
+    scroll-snap-align: start;
     background: linear-gradient(145deg, rgba(255,255,255,0.10), rgba(255,255,255,0.035));
     border: 1px solid rgba(255,255,255,0.10);
     border-radius: 22px;
-    padding: 18px;
-    min-height: 170px;
+    padding: 12px;
+    min-height: 390px;
     box-shadow: 0 16px 45px rgba(0,0,0,0.32);
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.movie-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 24px 60px rgba(229,9,20,0.18);
+}
+
+.movie-poster {
+    width: 100%;
+    height: 270px;
+    object-fit: cover;
+    border-radius: 16px;
+    margin-bottom: 12px;
 }
 
 .movie-title {
@@ -268,8 +306,9 @@ col4.metric("Box Office", f"${filtered_df['BoxOffice'].sum():,.0f}M")
 # =========================
 # Featured Movie Cards
 # =========================
-st.markdown('<div class="section-title">Featured Audience Favorites</div>', unsafe_allow_html=True)
-# Add poster images for a more cinematic UI
+st.markdown('<div class="section-title">Top Audience Picks</div>', unsafe_allow_html=True)
+
+# Poster images for a more cinematic UI
 poster_map = {
     "Inception": "https://image.tmdb.org/t/p/w500/qmDpIHrmpJINaRKAfWQfftjCdyi.jpg",
     "Interstellar": "https://image.tmdb.org/t/p/w500/gEU2QniE6E77NI6lCU6MxlNBvIx.jpg",
@@ -281,24 +320,27 @@ poster_map = {
     "La La Land": "https://image.tmdb.org/t/p/w500/uDO8zWDhfWwoFdKS4fzkUJt0Rf0.jpg"
 }
 
-featured = filtered_df.sort_values(["Rating", "Popularity"], ascending=False).head(6)
-cols = st.columns(3)
-for col, (_, row) in zip(cols, featured.iterrows()):
-    with col:
-        st.markdown(f"""
-        <div class="movie-card">
-            <img src="{poster_map.get(row['Movie'], 'https://via.placeholder.com/300x450?text=Movie')}" 
-                 style="width:100%; border-radius:16px; margin-bottom:14px;">
-            <div class="badge">{row['Genre']}</div>
-            <div class="movie-title">{row['Movie']}</div>
-            <div class="movie-meta">
-                Country: {row['Country']}<br>
-                Year: {row['Year']}<br>
-                Rating: ⭐ {row['Rating']} / 10<br>
-                Popularity: {row['Popularity']}
-            </div>
+featured = filtered_df.sort_values(["Rating", "Popularity"], ascending=False).head(8)
+
+movie_cards = ""
+for _, row in featured.iterrows():
+    movie_cards += f"""
+    <div class="movie-card">
+        <img class="movie-poster" src="{poster_map.get(row['Movie'], 'https://via.placeholder.com/300x450?text=Movie')}">
+        <div class="badge">{row['Genre']}</div>
+        <div class="movie-title">{row['Movie']}</div>
+        <div class="movie-meta">
+            {row['Country']} · {row['Year']}<br>
+            ⭐ {row['Rating']} / 10 · Popularity {row['Popularity']}
         </div>
-        """, unsafe_allow_html=True)
+    </div>
+    """
+
+st.markdown(f"""
+<div class="movie-scroll">
+    {movie_cards}
+</div>
+""", unsafe_allow_html=True)
 
 # =========================
 # Chart Theme Helper
