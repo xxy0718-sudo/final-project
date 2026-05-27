@@ -1,6 +1,7 @@
 import streamlit as st
 import pandas as pd
 import plotly.express as px
+import streamlit.components.v1 as components
 
 # =========================
 # Page Config
@@ -336,11 +337,83 @@ for _, row in featured.iterrows():
     </div>
     """
 
-st.markdown(f"""
-<div class="movie-scroll">
-    {movie_cards}
-</div>
-""", unsafe_allow_html=True)
+components.html(
+    f"""
+    <style>
+        body {{
+            background: transparent;
+            margin: 0;
+            font-family: Inter, Arial, sans-serif;
+        }}
+        .movie-scroll {{
+            display: flex;
+            gap: 18px;
+            overflow-x: auto;
+            padding: 10px 4px 24px 4px;
+            scroll-snap-type: x mandatory;
+        }}
+        .movie-scroll::-webkit-scrollbar {{
+            height: 8px;
+        }}
+        .movie-scroll::-webkit-scrollbar-track {{
+            background: rgba(255,255,255,0.08);
+            border-radius: 999px;
+        }}
+        .movie-scroll::-webkit-scrollbar-thumb {{
+            background: rgba(229, 9, 20, 0.75);
+            border-radius: 999px;
+        }}
+        .movie-card {{
+            flex: 0 0 210px;
+            scroll-snap-align: start;
+            background: linear-gradient(145deg, rgba(255,255,255,0.14), rgba(255,255,255,0.04));
+            border: 1px solid rgba(255,255,255,0.14);
+            border-radius: 22px;
+            padding: 12px;
+            min-height: 390px;
+            box-shadow: 0 16px 45px rgba(0,0,0,0.35);
+            color: white;
+        }}
+        .movie-card:hover {{
+            transform: translateY(-6px);
+            transition: 0.25s ease;
+            box-shadow: 0 24px 60px rgba(229,9,20,0.20);
+        }}
+        .movie-poster {{
+            width: 100%;
+            height: 270px;
+            object-fit: cover;
+            border-radius: 16px;
+            margin-bottom: 12px;
+        }}
+        .badge {{
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 999px;
+            background: rgba(229, 9, 20, 0.28);
+            color: #ffb3b3;
+            font-size: 12px;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }}
+        .movie-title {{
+            font-size: 17px;
+            font-weight: 800;
+            margin-bottom: 8px;
+        }}
+        .movie-meta {{
+            font-size: 13px;
+            color: #cfcfcf;
+            line-height: 1.6;
+        }}
+    </style>
+    <div class="movie-scroll">
+        {movie_cards}
+    </div>
+    """,
+    height=480,
+    scrolling=False
+)
 
 # =========================
 # Chart Theme Helper
