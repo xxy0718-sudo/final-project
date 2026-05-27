@@ -1,7 +1,6 @@
 import streamlit as st
 import pandas as pd
 import plotly.express as px
-import plotly.graph_objects as go
 
 # =========================
 # Page Config
@@ -13,47 +12,7 @@ st.set_page_config(
 )
 
 # =========================
-# Custom CSS
-# =========================
-st.markdown("""
-<style>
-    .stApp {
-        background: linear-gradient(135deg, #0f0f0f 0%, #1b1b1b 50%, #2b0f0f 100%);
-        color: #f5f5f5;
-    }
-    .main-title {
-        font-size: 48px;
-        font-weight: 800;
-        color: #ff4b4b;
-        text-align: center;
-        margin-bottom: 10px;
-    }
-    .sub-title {
-        font-size: 20px;
-        color: #cccccc;
-        text-align: center;
-        margin-bottom: 35px;
-    }
-    .section-title {
-        font-size: 28px;
-        font-weight: 700;
-        color: #ffcc66;
-        margin-top: 35px;
-        margin-bottom: 15px;
-    }
-    .metric-card {
-        background-color: rgba(255,255,255,0.08);
-        padding: 20px;
-        border-radius: 16px;
-        text-align: center;
-        box-shadow: 0 4px 20px rgba(0,0,0,0.3);
-    }
-</style>
-""", unsafe_allow_html=True)
-
-# =========================
-# Sample Movie Dataset
-# You can replace this part with your own CSV file later.
+# Sample Dataset
 # =========================
 @st.cache_data
 def load_data():
@@ -86,34 +45,190 @@ def load_data():
 df = load_data()
 
 # =========================
+# Advanced CSS
+# =========================
+st.markdown("""
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap');
+
+html, body, [class*="css"] {
+    font-family: 'Inter', sans-serif;
+}
+
+.stApp {
+    background:
+        radial-gradient(circle at 15% 10%, rgba(229, 9, 20, 0.28), transparent 28%),
+        radial-gradient(circle at 85% 20%, rgba(255, 184, 77, 0.15), transparent 25%),
+        linear-gradient(135deg, #050505 0%, #111111 45%, #1b0708 100%);
+    color: #f5f5f5;
+}
+
+[data-testid="stSidebar"] {
+    background: rgba(8, 8, 8, 0.92);
+    border-right: 1px solid rgba(255,255,255,0.08);
+}
+
+.hero {
+    padding: 58px 48px;
+    border-radius: 30px;
+    background:
+        linear-gradient(120deg, rgba(0,0,0,0.95), rgba(30,0,0,0.78)),
+        url("https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?auto=format&fit=crop&w=1600&q=80");
+    background-size: cover;
+    background-position: center;
+    box-shadow: 0 30px 80px rgba(0,0,0,0.55);
+    border: 1px solid rgba(255,255,255,0.08);
+    margin-bottom: 28px;
+}
+
+.hero-label {
+    display: inline-block;
+    padding: 8px 14px;
+    border-radius: 999px;
+    background: rgba(229, 9, 20, 0.22);
+    border: 1px solid rgba(229, 9, 20, 0.55);
+    color: #ffb3b3;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    margin-bottom: 18px;
+}
+
+.hero-title {
+    font-size: 64px;
+    line-height: 1.02;
+    font-weight: 900;
+    letter-spacing: -2px;
+    margin-bottom: 18px;
+    color: #ffffff;
+}
+
+.hero-title span {
+    color: #e50914;
+}
+
+.hero-subtitle {
+    max-width: 780px;
+    font-size: 19px;
+    line-height: 1.7;
+    color: #d8d8d8;
+}
+
+.section-title {
+    font-size: 27px;
+    font-weight: 850;
+    margin-top: 34px;
+    margin-bottom: 16px;
+    color: #ffffff;
+    letter-spacing: -0.5px;
+}
+
+.section-title:before {
+    content: "";
+    display: inline-block;
+    width: 8px;
+    height: 24px;
+    background: #e50914;
+    border-radius: 20px;
+    margin-right: 12px;
+    vertical-align: -4px;
+}
+
+.insight-card {
+    background: rgba(255,255,255,0.075);
+    border: 1px solid rgba(255,255,255,0.10);
+    padding: 22px;
+    border-radius: 24px;
+    box-shadow: 0 18px 50px rgba(0,0,0,0.35);
+    backdrop-filter: blur(14px);
+}
+
+.movie-card {
+    background: linear-gradient(145deg, rgba(255,255,255,0.10), rgba(255,255,255,0.035));
+    border: 1px solid rgba(255,255,255,0.10);
+    border-radius: 22px;
+    padding: 18px;
+    min-height: 170px;
+    box-shadow: 0 16px 45px rgba(0,0,0,0.32);
+}
+
+.movie-title {
+    font-size: 20px;
+    font-weight: 800;
+    color: #ffffff;
+    margin-bottom: 10px;
+}
+
+.movie-meta {
+    color: #bfbfbf;
+    font-size: 14px;
+    line-height: 1.7;
+}
+
+.badge {
+    display: inline-block;
+    padding: 5px 10px;
+    border-radius: 999px;
+    background: rgba(229, 9, 20, 0.22);
+    color: #ffb3b3;
+    font-size: 12px;
+    font-weight: 700;
+    margin-bottom: 12px;
+}
+
+[data-testid="stMetric"] {
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.10);
+    padding: 18px;
+    border-radius: 22px;
+    box-shadow: 0 18px 50px rgba(0,0,0,0.30);
+}
+
+[data-testid="stMetricLabel"] {
+    color: #bdbdbd;
+}
+
+[data-testid="stMetricValue"] {
+    color: #ffffff;
+    font-weight: 900;
+}
+
+hr {
+    border-color: rgba(255,255,255,0.08);
+}
+</style>
+""", unsafe_allow_html=True)
+
+# =========================
 # Sidebar Filters
 # =========================
-st.sidebar.title("🎞️ Filter Options")
+st.sidebar.title("🎞️ Cinema Filters")
+st.sidebar.caption("Explore the dataset by genre, country, rating, and release year.")
 
 selected_genres = st.sidebar.multiselect(
-    "Select Genre",
-    options=sorted(df["Genre"].unique()),
+    "Genre",
+    sorted(df["Genre"].unique()),
     default=sorted(df["Genre"].unique())
 )
 
 selected_countries = st.sidebar.multiselect(
-    "Select Country",
-    options=sorted(df["Country"].unique()),
+    "Country",
+    sorted(df["Country"].unique()),
     default=sorted(df["Country"].unique())
 )
 
 rating_range = st.sidebar.slider(
-    "Rating Range",
-    min_value=float(df["Rating"].min()),
-    max_value=float(df["Rating"].max()),
-    value=(float(df["Rating"].min()), float(df["Rating"].max()))
+    "Audience Rating",
+    float(df["Rating"].min()),
+    float(df["Rating"].max()),
+    (float(df["Rating"].min()), float(df["Rating"].max()))
 )
 
 year_range = st.sidebar.slider(
-    "Release Year Range",
-    min_value=int(df["Year"].min()),
-    max_value=int(df["Year"].max()),
-    value=(int(df["Year"].min()), int(df["Year"].max()))
+    "Release Year",
+    int(df["Year"].min()),
+    int(df["Year"].max()),
+    (int(df["Year"].min()), int(df["Year"].max()))
 )
 
 filtered_df = df[
@@ -124,74 +239,98 @@ filtered_df = df[
 ]
 
 # =========================
-# Header
+# Hero Section
 # =========================
-st.markdown('<div class="main-title">🎬 Cinematic Trends Dashboard</div>', unsafe_allow_html=True)
-st.markdown(
-    '<div class="sub-title">Exploring Global Movie Genres, Audience Ratings, and Popularity Trends</div>',
-    unsafe_allow_html=True
-)
-
-st.markdown(
-    """
-    This interactive dashboard explores how movie genres, audience ratings, popularity, box office performance,
-    and global cinema trends are connected. Users can filter movies by genre, rating, country, and release year
-    to discover different patterns in audience preferences.
-    """
-)
-
-# =========================
-# Overview Metrics
-# =========================
-col1, col2, col3, col4 = st.columns(4)
-
-with col1:
-    st.metric("Total Movies", len(filtered_df))
-with col2:
-    st.metric("Average Rating", round(filtered_df["Rating"].mean(), 2) if not filtered_df.empty else 0)
-with col3:
-    st.metric("Average Popularity", round(filtered_df["Popularity"].mean(), 2) if not filtered_df.empty else 0)
-with col4:
-    st.metric("Total Box Office", f"${filtered_df['BoxOffice'].sum():,.0f}M" if not filtered_df.empty else "$0M")
+st.markdown("""
+<div class="hero">
+    <div class="hero-label">INTERACTIVE CINEMA DATA EXPERIENCE</div>
+    <div class="hero-title">Cinematic <span>Trends</span><br>Dashboard</div>
+    <div class="hero-subtitle">
+        Explore global movie genres, audience ratings, popularity, box office performance,
+        and regional cinema patterns through an interactive visual dashboard.
+    </div>
+</div>
+""", unsafe_allow_html=True)
 
 if filtered_df.empty:
     st.warning("No movie data matches the selected filters. Please change the filter options.")
     st.stop()
 
 # =========================
-# Movie Genre Analysis
+# Overview Metrics
 # =========================
-st.markdown('<div class="section-title">1. Movie Genre Analysis</div>', unsafe_allow_html=True)
+col1, col2, col3, col4 = st.columns(4)
+col1.metric("Total Movies", len(filtered_df))
+col2.metric("Average Rating", round(filtered_df["Rating"].mean(), 2))
+col3.metric("Average Popularity", round(filtered_df["Popularity"].mean(), 2))
+col4.metric("Box Office", f"${filtered_df['BoxOffice'].sum():,.0f}M")
+
+# =========================
+# Featured Movie Cards
+# =========================
+st.markdown('<div class="section-title">Featured Audience Favorites</div>', unsafe_allow_html=True)
+featured = filtered_df.sort_values(["Rating", "Popularity"], ascending=False).head(3)
+cols = st.columns(3)
+for col, (_, row) in zip(cols, featured.iterrows()):
+    with col:
+        st.markdown(f"""
+        <div class="movie-card">
+            <div class="badge">{row['Genre']}</div>
+            <div class="movie-title">{row['Movie']}</div>
+            <div class="movie-meta">
+                Country: {row['Country']}<br>
+                Year: {row['Year']}<br>
+                Rating: ⭐ {row['Rating']} / 10<br>
+                Popularity: {row['Popularity']}
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+
+# =========================
+# Chart Theme Helper
+# =========================
+def style_chart(fig):
+    fig.update_layout(
+        template="plotly_dark",
+        paper_bgcolor="rgba(0,0,0,0)",
+        plot_bgcolor="rgba(0,0,0,0)",
+        font=dict(color="#f5f5f5"),
+        title=dict(font=dict(size=20, color="#ffffff")),
+        margin=dict(l=20, r=20, t=55, b=20),
+    )
+    return fig
+
+# =========================
+# Genre Analysis
+# =========================
+st.markdown('<div class="section-title">Movie Genre Analysis</div>', unsafe_allow_html=True)
 
 col1, col2 = st.columns(2)
-
 genre_count = filtered_df["Genre"].value_counts().reset_index()
 genre_count.columns = ["Genre", "Count"]
 
 with col1:
-    fig_bar = px.bar(
+    fig = px.bar(
         genre_count,
         x="Genre",
         y="Count",
-        title="Genre Popularity by Movie Count",
-        text="Count"
+        text="Count",
+        title="Genre Popularity"
     )
-    fig_bar.update_layout(template="plotly_dark")
-    st.plotly_chart(fig_bar, use_container_width=True)
+    st.plotly_chart(style_chart(fig), use_container_width=True)
 
 with col2:
-    fig_pie = px.pie(
+    fig = px.pie(
         genre_count,
         names="Genre",
         values="Count",
+        hole=0.52,
         title="Genre Distribution"
     )
-    fig_pie.update_layout(template="plotly_dark")
-    st.plotly_chart(fig_pie, use_container_width=True)
+    st.plotly_chart(style_chart(fig), use_container_width=True)
 
-# Genre trend by year
 trend_df = filtered_df.groupby(["Year", "Genre"]).size().reset_index(name="Count")
-fig_trend = px.line(
+fig = px.line(
     trend_df,
     x="Year",
     y="Count",
@@ -199,31 +338,29 @@ fig_trend = px.line(
     markers=True,
     title="Genre Trend Over Time"
 )
-fig_trend.update_layout(template="plotly_dark")
-st.plotly_chart(fig_trend, use_container_width=True)
+st.plotly_chart(style_chart(fig), use_container_width=True)
 
 # =========================
-# Audience Rating & Popularity Analysis
+# Audience Rating & Popularity
 # =========================
-st.markdown('<div class="section-title">2. Audience Rating & Popularity Analysis</div>', unsafe_allow_html=True)
+st.markdown('<div class="section-title">Audience Rating & Popularity Analysis</div>', unsafe_allow_html=True)
 
 col1, col2 = st.columns(2)
 
 avg_rating = filtered_df.groupby("Genre")["Rating"].mean().reset_index().sort_values("Rating", ascending=False)
 
 with col1:
-    fig_rating = px.bar(
+    fig = px.bar(
         avg_rating,
         x="Genre",
         y="Rating",
-        title="Average Rating by Genre",
-        text=avg_rating["Rating"].round(2)
+        text=avg_rating["Rating"].round(2),
+        title="Average Rating by Genre"
     )
-    fig_rating.update_layout(template="plotly_dark")
-    st.plotly_chart(fig_rating, use_container_width=True)
+    st.plotly_chart(style_chart(fig), use_container_width=True)
 
 with col2:
-    fig_scatter = px.scatter(
+    fig = px.scatter(
         filtered_df,
         x="Rating",
         y="Popularity",
@@ -232,68 +369,66 @@ with col2:
         hover_name="Movie",
         title="Rating vs Popularity"
     )
-    fig_scatter.update_layout(template="plotly_dark")
-    st.plotly_chart(fig_scatter, use_container_width=True)
+    st.plotly_chart(style_chart(fig), use_container_width=True)
 
-st.subheader("🏆 Top Rated Movies")
-top_movies = filtered_df.sort_values("Rating", ascending=False)[["Movie", "Genre", "Country", "Year", "Rating", "Popularity", "BoxOffice"]]
-st.dataframe(top_movies, use_container_width=True)
+st.markdown('<div class="section-title">Top Rated Movies</div>', unsafe_allow_html=True)
+st.dataframe(
+    filtered_df.sort_values("Rating", ascending=False)[
+        ["Movie", "Genre", "Country", "Year", "Rating", "Popularity", "BoxOffice"]
+    ],
+    use_container_width=True,
+    hide_index=True
+)
 
 # =========================
-# Popularity Trend Analysis
+# Popularity Trend
 # =========================
-st.markdown('<div class="section-title">3. Popularity Trend Analysis</div>', unsafe_allow_html=True)
+st.markdown('<div class="section-title">Popularity Trend Analysis</div>', unsafe_allow_html=True)
 
 popularity_year = filtered_df.groupby("Year")["Popularity"].mean().reset_index()
-
-fig_popularity = px.line(
+fig = px.area(
     popularity_year,
     x="Year",
     y="Popularity",
     markers=True,
     title="Average Movie Popularity by Release Year"
 )
-fig_popularity.update_layout(template="plotly_dark")
-st.plotly_chart(fig_popularity, use_container_width=True)
+st.plotly_chart(style_chart(fig), use_container_width=True)
 
 # =========================
 # Global Cinema Analysis
 # =========================
-st.markdown('<div class="section-title">4. Global Cinema Analysis</div>', unsafe_allow_html=True)
+st.markdown('<div class="section-title">Global Cinema Analysis</div>', unsafe_allow_html=True)
 
 col1, col2 = st.columns(2)
-
 country_count = filtered_df["Country"].value_counts().reset_index()
 country_count.columns = ["Country", "Count"]
 
 with col1:
-    fig_country = px.bar(
+    fig = px.bar(
         country_count,
         x="Country",
         y="Count",
-        title="Movie Distribution by Country",
-        text="Count"
+        text="Count",
+        title="Movie Distribution by Country"
     )
-    fig_country.update_layout(template="plotly_dark")
-    st.plotly_chart(fig_country, use_container_width=True)
+    st.plotly_chart(style_chart(fig), use_container_width=True)
 
 with col2:
     country_rating = filtered_df.groupby("Country")["Rating"].mean().reset_index().sort_values("Rating", ascending=False)
-    fig_country_rating = px.bar(
+    fig = px.bar(
         country_rating,
         x="Country",
         y="Rating",
-        title="Average Rating by Country",
-        text=country_rating["Rating"].round(2)
+        text=country_rating["Rating"].round(2),
+        title="Average Rating by Country"
     )
-    fig_country_rating.update_layout(template="plotly_dark")
-    st.plotly_chart(fig_country_rating, use_container_width=True)
+    st.plotly_chart(style_chart(fig), use_container_width=True)
 
 # =========================
-# Movie Mood Explorer
-# Creativity Feature
+# Mood Explorer
 # =========================
-st.markdown('<div class="section-title">5. Movie Mood Explorer</div>', unsafe_allow_html=True)
+st.markdown('<div class="section-title">Movie Mood Explorer</div>', unsafe_allow_html=True)
 
 mood = st.selectbox(
     "Choose a movie mood",
@@ -312,20 +447,31 @@ recommended = filtered_df[filtered_df["Genre"].isin(mood_map[mood])].sort_values
     ["Rating", "Popularity"], ascending=False
 )
 
-st.write(f"Based on the selected mood **{mood}**, the dashboard recommends these movies:")
-st.dataframe(recommended[["Movie", "Genre", "Country", "Year", "Rating", "Popularity"]], use_container_width=True)
+st.markdown(f"""
+<div class="insight-card">
+    <b>Selected Mood:</b> {mood}<br>
+    This feature connects emotional viewing preferences with movie genres, making the dashboard feel more like
+    an interactive cinema discovery experience rather than only a statistics page.
+</div>
+""", unsafe_allow_html=True)
+
+st.dataframe(
+    recommended[["Movie", "Genre", "Country", "Year", "Rating", "Popularity"]],
+    use_container_width=True,
+    hide_index=True
+)
 
 # =========================
 # Conclusion
 # =========================
 st.markdown('<div class="section-title">Conclusion</div>', unsafe_allow_html=True)
 
-st.markdown(
-    """
-    This dashboard shows that movie popularity is shaped by genre, audience rating, release period, and country.
-    By combining cinematic visual design with interactive data visualization, this project provides a more engaging
-    way to understand global cinema trends and audience preferences.
-    """
-)
+st.markdown("""
+<div class="insight-card">
+This dashboard demonstrates how movie data can be transformed into a cinematic and interactive visual experience.
+By connecting genres, ratings, popularity, box office performance, and country-based comparisons, the project helps
+users understand global cinema trends and audience preferences in a more engaging way.
+</div>
+""", unsafe_allow_html=True)
 
-st.caption("Final Project | Streamlit Dashboard | Movie Genre & Audience Trends")
+st.caption("Final Project | Streamlit Dashboard | Cinematic Trends Dashboard")
