@@ -319,12 +319,12 @@ poster_map = {
 
     "Oppenheimer": "https://image.tmdb.org/t/p/w500/ptpr0kGAckfQkJeJIt8st5dglvd.jpg",
 
-    "Inception": "https://upload.wikimedia.org/wikipedia/en/7/7f/Inception_ver3.jpg",
+    "Inception": "https://image.tmdb.org/t/p/w500/9gk7adHYeDvHkCSEqAvQNLV5Uge.jpg",
 
     "Spirited Away": "https://upload.wikimedia.org/wikipedia/en/d/db/Spirited_Away_Japanese_poster.png",
 
-    "Coco": "https://upload.wikimedia.org/wikipedia/en/9/90/Coco_%282017_film%29_poster.jpg",
-
+    "Coco": "https://image.tmdb.org/t/p/w500/gGEsBPAijhVUFoiNpgZXqRVWJt2.jpg",
+    
     "Your Name": "https://upload.wikimedia.org/wikipedia/en/0/0b/Your_Name_poster.png"
 }
 
