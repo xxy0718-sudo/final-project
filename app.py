@@ -309,25 +309,30 @@ col4.metric("Box Office", f"${filtered_df['BoxOffice'].sum():,.0f}M")
 # =========================
 st.markdown('<div class="section-title">Top Audience Picks</div>', unsafe_allow_html=True)
 
-# Poster images for a more cinematic UI
-poster_map = {
-    "Inception": "https://image.tmdb.org/t/p/w500/qmDpIHrmpJINaRKAfWQfftjCdyi.jpg",
-    "Interstellar": "https://image.tmdb.org/t/p/w500/gEU2QniE6E77NI6lCU6MxlNBvIx.jpg",
-    "The Dark Knight": "https://image.tmdb.org/t/p/w500/qJ2tW6WMUDux911r6m7haRef0WH.jpg",
-    "Parasite": "https://image.tmdb.org/t/p/w500/7IiTTgloJzvGI1TAYymCfbfl3vT.jpg",
-    "Dune": "https://image.tmdb.org/t/p/w500/d5NXSklXo0qyIYkgV94XAgMIckC.jpg",
-    "Oppenheimer": "https://image.tmdb.org/t/p/w500/ptpr0kGAckfQkJeJIt8st5dglvd.jpg",
-    "Avatar": "https://image.tmdb.org/t/p/w500/kyeqWdyUXW608qlYkRqosgbbJyK.jpg",
-    "La La Land": "https://image.tmdb.org/t/p/w500/uDO8zWDhfWwoFdKS4fzkUJt0Rf0.jpg"
-}
-
 featured = filtered_df.sort_values(["Rating", "Popularity"], ascending=False).head(8)
 
+genre_colors = {
+    "Action": "linear-gradient(135deg, #1f1c2c, #928dab)",
+    "Sci-Fi": "linear-gradient(135deg, #0f2027, #203a43, #2c5364)",
+    "Drama": "linear-gradient(135deg, #3a1c71, #d76d77, #ffaf7b)",
+    "Romance": "linear-gradient(135deg, #cc2b5e, #753a88)",
+    "Horror": "linear-gradient(135deg, #000000, #434343)",
+    "Animation": "linear-gradient(135deg, #ff9966, #ff5e62)"
+}
+
 movie_cards = ""
+
 for _, row in featured.iterrows():
+    bg = genre_colors.get(row["Genre"], "linear-gradient(135deg, #232526, #414345)")
+    
     movie_cards += f"""
     <div class="movie-card">
-        <img class="movie-poster" src="{poster_map.get(row['Movie'], 'https://via.placeholder.com/300x450?text=Movie')}">
+        <div class="fake-poster" style="background:{bg};">
+            <div class="poster-year">{row['Year']}</div>
+            <div class="poster-title">{row['Movie']}</div>
+            <div class="poster-genre">{row['Genre']}</div>
+        </div>
+
         <div class="badge">{row['Genre']}</div>
         <div class="movie-title">{row['Movie']}</div>
         <div class="movie-meta">
@@ -343,49 +348,78 @@ components.html(
         body {{
             background: transparent;
             margin: 0;
-            font-family: Inter, Arial, sans-serif;
+            font-family: Arial, sans-serif;
         }}
+
         .movie-scroll {{
             display: flex;
-            gap: 18px;
+            gap: 20px;
             overflow-x: auto;
-            padding: 10px 4px 24px 4px;
-            scroll-snap-type: x mandatory;
+            padding: 10px 20px 28px 20px;
         }}
+
         .movie-scroll::-webkit-scrollbar {{
             height: 8px;
         }}
+
         .movie-scroll::-webkit-scrollbar-track {{
             background: rgba(255,255,255,0.08);
             border-radius: 999px;
         }}
+
         .movie-scroll::-webkit-scrollbar-thumb {{
-            background: rgba(229, 9, 20, 0.75);
+            background: rgba(229, 9, 20, 0.8);
             border-radius: 999px;
         }}
+
         .movie-card {{
-            flex: 0 0 210px;
-            scroll-snap-align: start;
+            flex: 0 0 240px;
             background: linear-gradient(145deg, rgba(255,255,255,0.14), rgba(255,255,255,0.04));
             border: 1px solid rgba(255,255,255,0.14);
             border-radius: 22px;
-            padding: 12px;
+            padding: 14px;
             min-height: 390px;
             box-shadow: 0 16px 45px rgba(0,0,0,0.35);
             color: white;
         }}
+
         .movie-card:hover {{
             transform: translateY(-6px);
             transition: 0.25s ease;
-            box-shadow: 0 24px 60px rgba(229,9,20,0.20);
+            box-shadow: 0 24px 60px rgba(229,9,20,0.22);
         }}
-        .movie-poster {{
-            width: 100%;
+
+        .fake-poster {{
             height: 270px;
-            object-fit: cover;
             border-radius: 16px;
-            margin-bottom: 12px;
+            margin-bottom: 14px;
+            padding: 18px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            box-shadow: inset 0 0 80px rgba(0,0,0,0.35);
         }}
+
+        .poster-year {{
+            font-size: 14px;
+            opacity: 0.8;
+            text-align: right;
+        }}
+
+        .poster-title {{
+            font-size: 26px;
+            font-weight: 900;
+            line-height: 1.05;
+            text-transform: uppercase;
+            letter-spacing: -1px;
+        }}
+
+        .poster-genre {{
+            font-size: 13px;
+            opacity: 0.85;
+            letter-spacing: 2px;
+        }}
+
         .badge {{
             display: inline-block;
             padding: 5px 10px;
@@ -396,25 +430,27 @@ components.html(
             font-weight: 700;
             margin-bottom: 10px;
         }}
+
         .movie-title {{
-            font-size: 17px;
+            font-size: 18px;
             font-weight: 800;
             margin-bottom: 8px;
         }}
+
         .movie-meta {{
             font-size: 13px;
             color: #cfcfcf;
             line-height: 1.6;
         }}
     </style>
+
     <div class="movie-scroll">
         {movie_cards}
     </div>
     """,
-    height=480,
+    height=470,
     scrolling=False
 )
-
 # =========================
 # Chart Theme Helper
 # =========================
