@@ -312,13 +312,20 @@ st.markdown('<div class="section-title">Top Audience Picks</div>', unsafe_allow_
 # Poster images for a more cinematic UI
 poster_map = {
     "The Dark Knight": "https://image.tmdb.org/t/p/w500/qJ2tW6WMUDux911r6m7haRef0WH.jpg",
+
     "Interstellar": "https://image.tmdb.org/t/p/w500/gEU2QniE6E77NI6lCU6MxlNBvIx.jpg",
+
     "Parasite": "https://image.tmdb.org/t/p/w500/7IiTTgloJzvGI1TAYymCfbfl3vT.jpg",
+
     "Oppenheimer": "https://image.tmdb.org/t/p/w500/ptpr0kGAckfQkJeJIt8st5dglvd.jpg",
-    "Avatar": "https://image.tmdb.org/t/p/w500/kyeqWdyUXW608qlYkRqosgbbJyK.jpg",
-    "Dune": "https://image.tmdb.org/t/p/w500/d5NXSklXo0qyIYkgV94XAgMIckC.jpg",
-    "Mad Max: Fury Road": "https://image.tmdb.org/t/p/w500/hA2ple9q4qnwxp3hKVNhroipsir.jpg",
-    "Get Out": "https://image.tmdb.org/t/p/w500/tFXcEccSQMf3lfhfXKSU9iRBpa3.jpg"
+
+    "Inception": "https://upload.wikimedia.org/wikipedia/en/7/7f/Inception_ver3.jpg",
+
+    "Spirited Away": "https://upload.wikimedia.org/wikipedia/en/d/db/Spirited_Away_Japanese_poster.png",
+
+    "Coco": "https://upload.wikimedia.org/wikipedia/en/9/90/Coco_%282017_film%29_poster.jpg",
+
+    "Your Name": "https://upload.wikimedia.org/wikipedia/en/0/0b/Your_Name_poster.png"
 }
 
 featured = filtered_df.sort_values(["Rating", "Popularity"], ascending=False).head(8)
