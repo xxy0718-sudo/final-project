@@ -7,13 +7,13 @@ import streamlit.components.v1 as components
 # Page Config
 # =========================
 st.set_page_config(
-    page_title="Cinematic Trends Dashboard",
+    page_title="Movie Genre & Audience Trends Dashboard",
     page_icon="🎬",
     layout="wide"
 )
 
 # =========================
-# Sample Dataset
+# Dataset
 # =========================
 @st.cache_data
 def load_data():
@@ -21,8 +21,9 @@ def load_data():
         "Movie": [
             "Inception", "Parasite", "Titanic", "Avatar", "The Dark Knight",
             "La La Land", "Train to Busan", "Interstellar", "Spirited Away", "Get Out",
-            "Dune", "Your Name", "The Wandering Earth", "Oldboy", "Everything Everywhere All at Once",
-            "The Conjuring", "Mad Max: Fury Road", "The Notebook", "Coco", "Oppenheimer"
+            "Dune", "Your Name", "The Wandering Earth", "Oldboy",
+            "Everything Everywhere All at Once", "The Conjuring",
+            "Mad Max: Fury Road", "The Notebook", "Coco", "Oppenheimer"
         ],
         "Genre": [
             "Sci-Fi", "Drama", "Romance", "Sci-Fi", "Action",
@@ -46,27 +47,20 @@ def load_data():
 df = load_data()
 
 # =========================
-# Advanced CSS
+# CSS
 # =========================
 st.markdown("""
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap');
-
-html, body, [class*="css"] {
-    font-family: 'Inter', sans-serif;
-}
-
 .stApp {
     background:
-        radial-gradient(circle at 15% 10%, rgba(229, 9, 20, 0.28), transparent 28%),
-        radial-gradient(circle at 85% 20%, rgba(255, 184, 77, 0.15), transparent 25%),
+        radial-gradient(circle at 15% 10%, rgba(229, 9, 20, 0.25), transparent 28%),
+        radial-gradient(circle at 85% 20%, rgba(255, 184, 77, 0.12), transparent 25%),
         linear-gradient(135deg, #050505 0%, #111111 45%, #1b0708 100%);
-    color: #f5f5f5;
+    color: white;
 }
 
 [data-testid="stSidebar"] {
-    background: rgba(8, 8, 8, 0.92);
-    border-right: 1px solid rgba(255,255,255,0.08);
+    background: rgba(8, 8, 8, 0.95);
 }
 
 .hero {
@@ -78,7 +72,6 @@ html, body, [class*="css"] {
     background-size: cover;
     background-position: center;
     box-shadow: 0 30px 80px rgba(0,0,0,0.55);
-    border: 1px solid rgba(255,255,255,0.08);
     margin-bottom: 28px;
 }
 
@@ -86,22 +79,19 @@ html, body, [class*="css"] {
     display: inline-block;
     padding: 8px 14px;
     border-radius: 999px;
-    background: rgba(229, 9, 20, 0.22);
-    border: 1px solid rgba(229, 9, 20, 0.55);
+    background: rgba(229, 9, 20, 0.25);
     color: #ffb3b3;
     font-size: 13px;
     font-weight: 700;
-    letter-spacing: 1px;
     margin-bottom: 18px;
 }
 
 .hero-title {
-    font-size: 64px;
-    line-height: 1.02;
+    font-size: 60px;
+    line-height: 1.05;
     font-weight: 900;
-    letter-spacing: -2px;
+    color: white;
     margin-bottom: 18px;
-    color: #ffffff;
 }
 
 .hero-title span {
@@ -110,25 +100,24 @@ html, body, [class*="css"] {
 
 .hero-subtitle {
     max-width: 780px;
-    font-size: 19px;
+    font-size: 18px;
     line-height: 1.7;
     color: #d8d8d8;
 }
 
 .section-title {
-    font-size: 27px;
+    font-size: 28px;
     font-weight: 850;
-    margin-top: 34px;
-    margin-bottom: 16px;
-    color: #ffffff;
-    letter-spacing: -0.5px;
+    margin-top: 36px;
+    margin-bottom: 18px;
+    color: white;
 }
 
 .section-title:before {
     content: "";
     display: inline-block;
     width: 8px;
-    height: 24px;
+    height: 25px;
     background: #e50914;
     border-radius: 20px;
     margin-right: 12px;
@@ -136,113 +125,31 @@ html, body, [class*="css"] {
 }
 
 .insight-card {
-    background: rgba(255,255,255,0.075);
-    border: 1px solid rgba(255,255,255,0.10);
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.12);
     padding: 22px;
-    border-radius: 24px;
-    box-shadow: 0 18px 50px rgba(0,0,0,0.35);
-    backdrop-filter: blur(14px);
-}
-
-.movie-scroll {
-    display: flex;
-    gap: 18px;
-    overflow-x: auto;
-    padding: 10px 4px 24px 4px;
-    scroll-snap-type: x mandatory;
-}
-
-.movie-scroll::-webkit-scrollbar {
-    height: 8px;
-}
-
-.movie-scroll::-webkit-scrollbar-track {
-    background: rgba(255,255,255,0.05);
-    border-radius: 999px;
-}
-
-.movie-scroll::-webkit-scrollbar-thumb {
-    background: rgba(229, 9, 20, 0.75);
-    border-radius: 999px;
-}
-
-.movie-card {
-    flex: 0 0 210px;
-    scroll-snap-align: start;
-    background: linear-gradient(145deg, rgba(255,255,255,0.10), rgba(255,255,255,0.035));
-    border: 1px solid rgba(255,255,255,0.10);
     border-radius: 22px;
-    padding: 12px;
-    min-height: 390px;
-    box-shadow: 0 16px 45px rgba(0,0,0,0.32);
-    transition: transform 0.25s ease, box-shadow 0.25s ease;
-}
-
-.movie-card:hover {
-    transform: translateY(-6px);
-    box-shadow: 0 24px 60px rgba(229,9,20,0.18);
-}
-
-.movie-poster {
-    width: 100%;
-    height: 270px;
-    object-fit: cover;
-    border-radius: 16px;
-    margin-bottom: 12px;
-}
-
-.movie-title {
-    font-size: 20px;
-    font-weight: 800;
-    color: #ffffff;
-    margin-bottom: 10px;
-}
-
-.movie-meta {
-    color: #bfbfbf;
-    font-size: 14px;
-    line-height: 1.7;
-}
-
-.badge {
-    display: inline-block;
-    padding: 5px 10px;
-    border-radius: 999px;
-    background: rgba(229, 9, 20, 0.22);
-    color: #ffb3b3;
-    font-size: 12px;
-    font-weight: 700;
-    margin-bottom: 12px;
+    box-shadow: 0 18px 50px rgba(0,0,0,0.35);
+    margin-top: 15px;
+    margin-bottom: 25px;
+    color: #f2f2f2;
 }
 
 [data-testid="stMetric"] {
     background: rgba(255,255,255,0.08);
     border: 1px solid rgba(255,255,255,0.10);
     padding: 18px;
-    border-radius: 22px;
+    border-radius: 20px;
     box-shadow: 0 18px 50px rgba(0,0,0,0.30);
-}
-
-[data-testid="stMetricLabel"] {
-    color: #bdbdbd;
-}
-
-[data-testid="stMetricValue"] {
-    color: #ffffff;
-    font-weight: 900;
-}
-
-hr {
-    border-color: rgba(255,255,255,0.08);
 }
 </style>
 """, unsafe_allow_html=True)
 
 # =========================
-# Sidebar Filters
+# Sidebar
 # =========================
 st.sidebar.title("🎞️ Cinema Filters")
-st.sidebar.caption("Explore the dataset by genre, country, rating, and release year.")
+st.sidebar.caption("Explore movies by genre, country, rating, and year.")
 
 selected_genres = st.sidebar.multiselect(
     "Genre",
@@ -278,14 +185,14 @@ filtered_df = df[
 ]
 
 # =========================
-# Hero Section
+# Hero
 # =========================
 st.markdown("""
 <div class="hero">
     <div class="hero-label">INTERACTIVE CINEMA DATA EXPERIENCE</div>
-    <div class="hero-title">Cinematic <span>Trends</span><br>Dashboard</div>
+    <div class="hero-title">Movie Genre &<br><span>Audience Trends</span> Dashboard</div>
     <div class="hero-subtitle">
-        Explore global movie genres, audience ratings, popularity, box office performance,
+        Exploring global movie genres, audience ratings, popularity, box office performance,
         and regional cinema patterns through an interactive visual dashboard.
     </div>
 </div>
@@ -296,7 +203,7 @@ if filtered_df.empty:
     st.stop()
 
 # =========================
-# Overview Metrics
+# Metrics
 # =========================
 col1, col2, col3, col4 = st.columns(4)
 col1.metric("Total Movies", len(filtered_df))
@@ -305,36 +212,57 @@ col3.metric("Average Popularity", round(filtered_df["Popularity"].mean(), 2))
 col4.metric("Box Office", f"${filtered_df['BoxOffice'].sum():,.0f}M")
 
 # =========================
-# Featured Movie Cards
+# Dynamic Insight
+# =========================
+top_genre = filtered_df["Genre"].value_counts().idxmax()
+top_country = filtered_df["Country"].value_counts().idxmax()
+avg_rating_value = round(filtered_df["Rating"].mean(), 2)
+avg_popularity_value = round(filtered_df["Popularity"].mean(), 2)
+
+st.markdown(f"""
+<div class="insight-card">
+    <b>Current Insight</b><br>
+    Based on the selected filters, <b>{top_genre}</b> is the most represented genre,
+    and <b>{top_country}</b> appears most frequently in the filtered dataset.
+    The average rating is <b>{avg_rating_value}</b>, while the average popularity score is <b>{avg_popularity_value}</b>.
+    This shows that each filter changes not only the charts, but also the interpretation of audience trends.
+</div>
+""", unsafe_allow_html=True)
+
+# =========================
+# Movie Cards
 # =========================
 st.markdown('<div class="section-title">Top Audience Picks</div>', unsafe_allow_html=True)
 
-# Poster images for a more cinematic UI
 poster_map = {
     "The Dark Knight": "https://image.tmdb.org/t/p/w500/qJ2tW6WMUDux911r6m7haRef0WH.jpg",
-
     "Interstellar": "https://image.tmdb.org/t/p/w500/gEU2QniE6E77NI6lCU6MxlNBvIx.jpg",
-
     "Parasite": "https://image.tmdb.org/t/p/w500/7IiTTgloJzvGI1TAYymCfbfl3vT.jpg",
-
     "Oppenheimer": "https://image.tmdb.org/t/p/w500/ptpr0kGAckfQkJeJIt8st5dglvd.jpg",
-
     "Inception": "https://image.tmdb.org/t/p/w500/9gk7adHYeDvHkCSEqAvQNLV5Uge.jpg",
-
     "Spirited Away": "https://upload.wikimedia.org/wikipedia/en/d/db/Spirited_Away_Japanese_poster.png",
-
     "Coco": "https://image.tmdb.org/t/p/w500/gGEsBPAijhVUFoiNpgZXqRVWJt2.jpg",
-    
     "Your Name": "https://upload.wikimedia.org/wikipedia/en/0/0b/Your_Name_poster.png"
 }
 
-featured = filtered_df.sort_values(["Rating", "Popularity"], ascending=False).head(8)
+featured_movies = [
+    "The Dark Knight",
+    "Inception",
+    "Interstellar",
+    "Spirited Away",
+    "Parasite",
+    "Oppenheimer",
+    "Coco",
+    "Your Name"
+]
+
+featured = filtered_df[filtered_df["Movie"].isin(featured_movies)]
 
 movie_cards = ""
 for _, row in featured.iterrows():
     movie_cards += f"""
     <div class="movie-card">
-        <img class="movie-poster" src="{poster_map.get(row['Movie'], 'https://via.placeholder.com/300x450?text=Movie')}">
+        <img class="movie-poster" src="{poster_map.get(row['Movie'], '')}">
         <div class="badge">{row['Genre']}</div>
         <div class="movie-title">{row['Movie']}</div>
         <div class="movie-meta">
@@ -350,29 +278,32 @@ components.html(
         body {{
             background: transparent;
             margin: 0;
-            font-family: Inter, Arial, sans-serif;
+            font-family: Arial, sans-serif;
         }}
+
         .movie-scroll {{
             display: flex;
             gap: 18px;
             overflow-x: auto;
-            padding: 10px 4px 24px 4px;
-            scroll-snap-type: x mandatory;
+            padding: 10px 20px 28px 20px;
         }}
+
         .movie-scroll::-webkit-scrollbar {{
             height: 8px;
         }}
+
         .movie-scroll::-webkit-scrollbar-track {{
             background: rgba(255,255,255,0.08);
             border-radius: 999px;
         }}
+
         .movie-scroll::-webkit-scrollbar-thumb {{
-            background: rgba(229, 9, 20, 0.75);
+            background: rgba(229, 9, 20, 0.8);
             border-radius: 999px;
         }}
+
         .movie-card {{
-            flex: 0 0 210px;
-            scroll-snap-align: start;
+            flex: 0 0 220px;
             background: linear-gradient(145deg, rgba(255,255,255,0.14), rgba(255,255,255,0.04));
             border: 1px solid rgba(255,255,255,0.14);
             border-radius: 22px;
@@ -381,11 +312,13 @@ components.html(
             box-shadow: 0 16px 45px rgba(0,0,0,0.35);
             color: white;
         }}
+
         .movie-card:hover {{
             transform: translateY(-6px);
             transition: 0.25s ease;
             box-shadow: 0 24px 60px rgba(229,9,20,0.20);
         }}
+
         .movie-poster {{
             width: 100%;
             height: 270px;
@@ -393,6 +326,7 @@ components.html(
             border-radius: 16px;
             margin-bottom: 12px;
         }}
+
         .badge {{
             display: inline-block;
             padding: 5px 10px;
@@ -403,17 +337,20 @@ components.html(
             font-weight: 700;
             margin-bottom: 10px;
         }}
+
         .movie-title {{
             font-size: 17px;
             font-weight: 800;
             margin-bottom: 8px;
         }}
+
         .movie-meta {{
             font-size: 13px;
             color: #cfcfcf;
             line-height: 1.6;
         }}
     </style>
+
     <div class="movie-scroll">
         {movie_cards}
     </div>
@@ -423,7 +360,7 @@ components.html(
 )
 
 # =========================
-# Chart Theme Helper
+# Chart Style
 # =========================
 def style_chart(fig):
     fig.update_layout(
@@ -507,7 +444,28 @@ with col2:
     )
     st.plotly_chart(style_chart(fig), use_container_width=True)
 
+correlation = filtered_df["Rating"].corr(filtered_df["Popularity"])
+
+if correlation > 0.5:
+    relation_text = "a strong positive relationship"
+elif correlation > 0.2:
+    relation_text = "a moderate positive relationship"
+elif correlation > -0.2:
+    relation_text = "a weak relationship"
+else:
+    relation_text = "a negative relationship"
+
+st.markdown(f"""
+<div class="insight-card">
+    <b>Rating vs Popularity Insight</b><br>
+    The correlation between audience rating and popularity is <b>{correlation:.2f}</b>,
+    which indicates <b>{relation_text}</b>.
+    This helps users understand whether highly rated movies are also highly popular.
+</div>
+""", unsafe_allow_html=True)
+
 st.markdown('<div class="section-title">Top Rated Movies</div>', unsafe_allow_html=True)
+
 st.dataframe(
     filtered_df.sort_values("Rating", ascending=False)[
         ["Movie", "Genre", "Country", "Year", "Rating", "Popularity", "BoxOffice"]
@@ -522,6 +480,7 @@ st.dataframe(
 st.markdown('<div class="section-title">Popularity Trend Analysis</div>', unsafe_allow_html=True)
 
 popularity_year = filtered_df.groupby("Year")["Popularity"].mean().reset_index()
+
 fig = px.area(
     popularity_year,
     x="Year",
@@ -537,6 +496,7 @@ st.plotly_chart(style_chart(fig), use_container_width=True)
 st.markdown('<div class="section-title">Global Cinema Analysis</div>', unsafe_allow_html=True)
 
 col1, col2 = st.columns(2)
+
 country_count = filtered_df["Country"].value_counts().reset_index()
 country_count.columns = ["Country", "Count"]
 
@@ -579,15 +539,25 @@ mood_map = {
     "Warm": ["Romance", "Animation"]
 }
 
+mood_explanation = {
+    "Exciting": "This mood connects to high-energy genres such as Action and Sci-Fi.",
+    "Emotional": "This mood connects to character-driven genres such as Drama and Romance.",
+    "Tense": "This mood connects to suspenseful genres such as Horror and Drama.",
+    "Imaginative": "This mood connects to visually creative genres such as Sci-Fi and Animation.",
+    "Warm": "This mood connects to comforting genres such as Romance and Animation."
+}
+
 recommended = filtered_df[filtered_df["Genre"].isin(mood_map[mood])].sort_values(
-    ["Rating", "Popularity"], ascending=False
+    ["Rating", "Popularity"],
+    ascending=False
 )
 
 st.markdown(f"""
 <div class="insight-card">
     <b>Selected Mood:</b> {mood}<br>
-    This feature connects emotional viewing preferences with movie genres, making the dashboard feel more like
-    an interactive cinema discovery experience rather than only a statistics page.
+    {mood_explanation[mood]}<br><br>
+    This feature connects <b>audience emotion</b> with <b>movie genre</b> and
+    <b>movie recommendation</b>, making the dashboard feel more like an interactive cinema discovery experience.
 </div>
 """, unsafe_allow_html=True)
 
@@ -598,16 +568,16 @@ st.dataframe(
 )
 
 # =========================
-# Conclusion
+# Key Takeaways
 # =========================
-st.markdown('<div class="section-title">Conclusion</div>', unsafe_allow_html=True)
+st.markdown('<div class="section-title">Key Takeaways</div>', unsafe_allow_html=True)
 
 st.markdown("""
 <div class="insight-card">
-This dashboard demonstrates how movie data can be transformed into a cinematic and interactive visual experience.
-By connecting genres, ratings, popularity, box office performance, and country-based comparisons, the project helps
-users understand global cinema trends and audience preferences in a more engaging way.
+    This dashboard connects movie data with audience interpretation.
+    Through filters, charts, poster browsing, and mood-based discovery,
+    users can explore how genre, rating, popularity, country, and emotion shape the movie-viewing experience.
 </div>
 """, unsafe_allow_html=True)
 
-st.caption("Final Project | Streamlit Dashboard | Cinematic Trends Dashboard")
+st.caption("Final Project | Streamlit Dashboard | Movie Genre & Audience Trends Dashboard")
