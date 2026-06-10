@@ -522,13 +522,18 @@ with col2:
     st.plotly_chart(style_chart(fig), use_container_width=True)
 
 # =========================
-# Mood Explorer
+# Movie Mood Explorer
 # =========================
-st.markdown('<div class="section-title">Movie Mood Explorer</div>', unsafe_allow_html=True)
 
-mood = st.selectbox(
-    "Choose a movie mood",
-    ["Exciting", "Emotional", "Tense", "Imaginative", "Warm"]
+st.markdown(
+    '<div class="section-title">Movie Mood Explorer</div>',
+    unsafe_allow_html=True
+)
+
+mood = st.radio(
+    "Select a Mood",
+    ["Exciting", "Emotional", "Tense", "Imaginative", "Warm"],
+    horizontal=True
 )
 
 mood_map = {
@@ -539,30 +544,34 @@ mood_map = {
     "Warm": ["Romance", "Animation"]
 }
 
-mood_explanation = {
-    "Exciting": "This mood connects to high-energy genres such as Action and Sci-Fi.",
-    "Emotional": "This mood connects to character-driven genres such as Drama and Romance.",
-    "Tense": "This mood connects to suspenseful genres such as Horror and Drama.",
-    "Imaginative": "This mood connects to visually creative genres such as Sci-Fi and Animation.",
-    "Warm": "This mood connects to comforting genres such as Romance and Animation."
+mood_description = {
+    "Exciting": "High-energy movies with action, adventure, and excitement.",
+    "Emotional": "Character-driven stories that focus on relationships and feelings.",
+    "Tense": "Suspenseful and thrilling movies that create tension.",
+    "Imaginative": "Creative worlds filled with fantasy, science fiction, and imagination.",
+    "Warm": "Comforting and uplifting stories that create a positive feeling."
 }
 
-recommended = filtered_df[filtered_df["Genre"].isin(mood_map[mood])].sort_values(
+st.markdown(f"""
+<div class="insight-card">
+<b>{mood}</b><br><br>
+{mood_description[mood]}
+</div>
+""", unsafe_allow_html=True)
+
+recommended = filtered_df[
+    filtered_df["Genre"].isin(mood_map[mood])
+].sort_values(
     ["Rating", "Popularity"],
     ascending=False
 )
 
-st.markdown(f"""
-<div class="insight-card">
-    <b>Selected Mood:</b> {mood}<br>
-    {mood_explanation[mood]}<br><br>
-    This feature connects <b>audience emotion</b> with <b>movie genre</b> and
-    <b>movie recommendation</b>, making the dashboard feel more like an interactive cinema discovery experience.
-</div>
-""", unsafe_allow_html=True)
+st.markdown("### Recommended Movies")
 
 st.dataframe(
-    recommended[["Movie", "Genre", "Country", "Year", "Rating", "Popularity"]],
+    recommended[
+        ["Movie", "Genre", "Country", "Year", "Rating", "Popularity"]
+    ],
     use_container_width=True,
     hide_index=True
 )
