@@ -374,97 +374,44 @@ def style_chart(fig):
     return fig
 
 # =========================
-# Interactive Analysis Mode
+# Genre Analysis
 # =========================
-st.markdown('<div class="section-title">Interactive Analysis Mode</div>', unsafe_allow_html=True)
+st.markdown('<div class="section-title">Movie Genre Analysis</div>', unsafe_allow_html=True)
 
-analysis_mode = st.radio(
-    "Choose an analysis mode",
-    ["Genre View", "Rating View", "Country View", "Mood View"],
-    horizontal=True
-)
+col1, col2 = st.columns(2)
+genre_count = filtered_df["Genre"].value_counts().reset_index()
+genre_count.columns = ["Genre", "Count"]
 
-if analysis_mode == "Genre View":
-    st.subheader("Genre View")
-    genre_count = filtered_df["Genre"].value_counts().reset_index()
-    genre_count.columns = ["Genre", "Count"]
-
+with col1:
     fig = px.bar(
         genre_count,
         x="Genre",
         y="Count",
         text="Count",
-        title="Movie Count by Genre"
+        title="Genre Popularity"
     )
     st.plotly_chart(style_chart(fig), use_container_width=True)
 
-    st.info("This view helps users compare which movie genres appear most frequently.")
-
-elif analysis_mode == "Rating View":
-    st.subheader("Rating View")
-    avg_rating = filtered_df.groupby("Genre")["Rating"].mean().reset_index()
-
-    fig = px.bar(
-        avg_rating,
-        x="Genre",
-        y="Rating",
-        text=avg_rating["Rating"].round(2),
-        title="Average Rating by Genre"
+with col2:
+    fig = px.pie(
+        genre_count,
+        names="Genre",
+        values="Count",
+        hole=0.52,
+        title="Genre Distribution"
     )
     st.plotly_chart(style_chart(fig), use_container_width=True)
 
-    st.info("This view shows which genres receive higher audience ratings.")
-
-elif analysis_mode == "Country View":
-    st.subheader("Country View")
-    country_count = filtered_df["Country"].value_counts().reset_index()
-    country_count.columns = ["Country", "Count"]
-
-    fig = px.bar(
-        country_count,
-        x="Country",
-        y="Count",
-        text="Count",
-        title="Movie Distribution by Country"
-    )
-    st.plotly_chart(style_chart(fig), use_container_width=True)
-
-    st.info("This view compares movie distribution across countries.")
-
-elif analysis_mode == "Mood View":
-    st.subheader("Mood View")
-
-    mood = st.radio(
-        "Select a Mood",
-        ["Exciting", "Emotional", "Tense", "Imaginative", "Warm"],
-        horizontal=True
-    )
-
-    mood_map = {
-        "Exciting": ["Action", "Sci-Fi"],
-        "Emotional": ["Drama", "Romance"],
-        "Tense": ["Horror", "Drama"],
-        "Imaginative": ["Sci-Fi", "Animation"],
-        "Warm": ["Romance", "Animation"]
-    }
-
-    recommended = filtered_df[
-        filtered_df["Genre"].isin(mood_map[mood])
-    ].sort_values(["Rating", "Popularity"], ascending=False)
-
-    st.markdown(f"""
-    <div class="insight-card">
-        <b>Selected Mood:</b> {mood}<br>
-        Recommended genres: <b>{", ".join(mood_map[mood])}</b>
-    </div>
-    """, unsafe_allow_html=True)
-
-    st.dataframe(
-        recommended[["Movie", "Genre", "Country", "Year", "Rating", "Popularity"]],
-        use_container_width=True,
-        hide_index=True
-    )
-
+trend_df = filtered_df.groupby(["Year", "Genre"]).size().reset_index(name="Count")
+fig = px.line(
+    trend_df,
+    x="Year",
+    y="Count",
+    color="Genre",
+    markers=True,
+    title="Genre Trend Over Time"
+)
+st.plotly_chart(style_chart(fig), use_container_width=True)
 # =========================
 # Audience Rating & Popularity
 # =========================
