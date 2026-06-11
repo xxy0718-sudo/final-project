@@ -148,7 +148,7 @@ st.markdown("""
 # =========================
 # Sidebar
 # =========================
-st.sidebar.title("🎞️ Cinema Filters")
+st.sidebar.title("🎬 Movie Explorer")
 st.sidebar.caption("Explore movies by genre, country, rating, and year.")
 
 selected_genres = st.sidebar.multiselect(
